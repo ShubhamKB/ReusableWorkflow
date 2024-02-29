@@ -40,4 +40,4 @@ jobs:
         run: docker build . --tag ${{ inputs.gar_location }}/nginx:latest
 
       - name: Push image
-        run: docker push ${{ env.gar_location }}/nginx:latest
+        run: docker push ${{ inputs.gar_location }}/nginx:latest
