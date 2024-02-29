@@ -3,15 +3,15 @@ name: Reusable workflow
 on:
   workflow_call: 
     inputs:
-      REGION:
+      region:
         required: true
         type: string
-      GAR_LOCATION:
+      gar_location:
         required: true
         type: string
         
     secrets:
-      GCP_SA_KEY:
+      gcp_sa_key:
         required: true
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
-            credentials_json: "${{ secrets.GCP_SA_KEY }}"
+            credentials_json: "${{ secrets.gcp_sa_key }}"
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
@@ -34,10 +34,10 @@ jobs:
 
       - name: "Docker auth"
         run: |-
-          gcloud auth configure-docker ${{ inputs.REGION }}-docker.pkg.dev --quiet
+          gcloud auth configure-docker ${{ inputs.region }}-docker.pkg.dev --quiet
 
       - name: Build image
-        run: docker build . --tag ${{ inputs.GAR_LOCATION }}/nginx:latest
+        run: docker build . --tag ${{ inputs.gar_location }}/nginx:latest
 
       - name: Push image
-        run: docker push ${{ env.GAR_LOCATION }}/nginx:latest
+        run: docker push ${{ env.gar_location }}/nginx:latest
